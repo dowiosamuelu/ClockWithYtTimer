@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>實時時間和YouTube影片</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@700&display=swap');
+        
+        :root {
+            --accent-color: rgb(55, 156, 57);
+        }
+        
+        body {
+            font-family: 'Chivo Mono', monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+        .time-container {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .video-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e0e0e0;
+            padding: 20px;
+        }
+        #current-time {
+            font-family: 'Chivo Mono', monospace;
+            font-weight: 700;
+            /* font-style: italic; */
+            font-size: 10rem;
+            color: #333e;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        iframe {
+            width: 100%;
+            max-width: 560px;
+            height: 315px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Geometric decorations */
+        .decoration {
+            position: absolute;
+            background-color: var(--accent-color);
+            opacity: 0.15;
+            z-index: 1;
+        }
+        
+        .circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            top: 10%;
+            right: 10%;
+        }
+        
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 173px solid var(--accent-color);
+            opacity: 0.1;
+            bottom: 5%;
+            left: 10%;
+        }
+        
+        .rectangle {
+            width: 80px;
+            height: 200px;
+            top: 40%;
+            left: 20%;
+            transform: rotate(45deg);
+        }
+        
+        /* Accent lines */
+        .accent-line {
+            position: absolute;
+            background-color: var(--accent-color);
+            height: 5px;
+            width: 80px;
+            z-index: 2;
+        }
+        
+        .line-1 {
+            top: 15%;
+            left: 30px;
+        }
+        
+        .line-2 {
+            bottom: 15%;
+            right: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .time-container, .video-container {
+                padding: 10px;
+            }
+            #current-time {
+                font-size: 4rem;
+                margin-bottom: 10px;
+            }
+            iframe {
+                height: 240px;
+            }
+            
+            .circle {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .triangle {
+                border-left: 60px solid transparent;
+                border-right: 60px solid transparent;
+                border-bottom: 104px solid var(--accent-color);
+            }
+            
+            .rectangle {
+                width: 50px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="time-container">
+            <div class="decoration circle"></div>
+            <div class="decoration triangle"></div>
+            <div class="decoration rectangle"></div>
+            <div class="accent-line line-1"></div>
+            <div class="accent-line line-2"></div>
+            <div id="current-time">00:00:00</div>
+        </div>
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/xSbIBOU7-u0" 
+                title="YouTube影片播放器" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        // 取得元素
+        const currentTimeElement = document.getElementById('current-time');
+
+        // 更新實時時間
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            currentTimeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // 初始化實時時間並設置每秒更新
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 1000);
+    </script>
+</body>
+</html>
